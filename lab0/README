@@ -1,0 +1,41 @@
+NAME: Miles Kang
+EMAIL: milesjkang@gmail.com
+ID: X
+
+Project 0
+
+The included files are:
+
+1. lab0.c: The C source code for the program.
+
+2. check.sh: My script for running the smoke-test cases (described below).
+
+3. Makefile: Supports (default), check, clean, and dist.
+   a. default: builds the executable.
+   b. check:   runs check.sh for a smoke-test.
+   c. clean:   deletes all files created by Makefile.
+   d. dist:    builds the distribution tarball.
+
+4. backtrace.png: screenshot of gdb debugging session where I run with segfault
+   and get a stack backtrace.
+   
+5. breakpoint.png: screenshot of gdb debugging session where I set a breakpoint
+   at the bad assignment, run, and inspect the pointer.
+
+In my smoke-test, I first tested a successful run of lab0 by creating and passing
+in a valid input file and having the program write to an output file. By checking
+that the exit code is 0, we can know that the program created the output file and
+exited successfully. I then compared the input and output files to make sure that
+the program successfully copied them.  I also checked that the segfault and catch
+options worked by running lab0 with them and checking that the exit code is 4.
+This initial test verifies that lab0 and all four of the long options do work
+properly.
+
+I then tested all the possible errors that could occur by running lab0 incorrectly
+and checking the exit status. I tried running lab0 with an unrecognized argument
+"--what", which should exit with code 1. I tested a nonexistent input file and
+checked that the exit code is 2. I did the same for an unmodifiable output file,
+checking that the exit code is 3.
+
+I found the TA's notes during discussion to be very helpful in understanding the
+getopt function, input/output redirection, and some useful gdb debugging commands.

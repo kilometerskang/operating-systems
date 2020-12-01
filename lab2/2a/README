@@ -1,0 +1,70 @@
+NAME: Miles Kang
+EMAIL: milesjkang@gmail.com
+ID: X
+
+Project 2a
+
+Included:
+1. lab2_add.c:
+   Source code for part 1, working with threads on a single counter variable.
+2. lab2_list.c:
+   Source code for part 2, working with threads on a linked list.
+3. SortedList.h, SortedList.c:
+   Implementation of linked list.
+4. test.sh:
+   Script to run tests with various arguments passed (threads, interations, etc.).
+5. Makefile:
+   Supports build, tests, graphs, clean, and dist targets.
+6. lab2_add.csv, lab2_list.csv:
+   Test results of the lab2_add and lab2_list, respectively.
+7. lab2_add-1.png, lab2_add-2.png, lab2_add-3.png, lab2_add-4.png, lab2_add-5.png:
+   Various graphs from the results of lab2_add.
+8. lab2_list-1.png, lab2_list-2.png, lab2_list-3.png, lab2_list-4.png:
+   Various graphs from the results of lab2_list.
+9. lab2_add.gp, lab2_list.gp:
+   Scripts to generate the graphs described above.
+
+2.1.1: causing conflicts
+
+With fewer iterations, the chances of threads being preempted in their critical
+sections is not so high, so they are less likely to produce errors. With more
+iterations, this probability is much higher, and thus the counter will be farther
+from zero.
+
+2.1.2: cost of yielding
+
+The yield system call and process of context switching produces a large overhead
+that can hurt execution time significantly. The time goes towards making the system
+call (trap) and saving registers. It is not possible to get the valid per-operation
+timings using --yield because there is no way to measure the amount of time taken
+up by this overhead.
+
+2.1.3: measurement errors
+
+The more iterations we have, the less fraction of the total runtime we are spending
+with overhead. With infinite iterations, the overhead would become completely
+amortized, and the cost per operation would be ideal.
+
+2.1.4: cost of serialization
+
+With fewer threads, it is less likely that we will race conditions where threads
+are either competing for memory or waiting on each other. Increasing the number of
+threads increases the frequency of waiting and lock contention.
+
+2.2.1: scalability of mutex
+
+The time per operation increases less linearly with the number of threads in the
+adds because the add operation itself is so simple that most of the time being
+counted is spent in overhead. The list operations are more heavy, so overhead
+plays a relatively smaller role in the time. Therefore, both curves are positively
+sloped but not perfectly linear, thanks to overhead.
+
+2.2.2: scalability of spin lock
+
+Comparing the mutex and spin locks, we have that the mutex locks generally perform
+better with a greater number of threads, but the spin locks may perform better in
+programs with fewer threads. This is because spin locks hog the CPU more than mutex
+locks do, so with a large number of threads, constantly checking the lock wastes
+effort. However, with fewer threads, this disadvantage is outweighed by the simple
+nature of the spin lock versus the mutex lock. Graph-wise, the spin lock increases
+the runtime at a much faster rate than the mutex lock.

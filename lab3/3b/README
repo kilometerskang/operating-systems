@@ -1,0 +1,16 @@
+NAME: Miles Kang,Michelle Zhuang
+EMAIL: milesjkang@gmail.com,michellezhuang@g.ucla.edu
+ID: X
+
+Project 3b
+
+The included files are:
+
+1. lab3b.py: The python source code for the program.
+
+2. Makefile: Supports (default), clean, and dist.
+   a. default: builds the executable.
+   b. clean:   deletes all files created by Makefile.
+   c. dist:    builds the distribution tarball.
+
+3. README: Description of all included files.

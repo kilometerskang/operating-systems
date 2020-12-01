@@ -1,0 +1,69 @@
+NAME: Miles Kang
+EMAIL: milesjkang@gmail.com
+ID: X
+
+Project 2b
+
+Included:
+1. lab2_list.c:
+   Source code for multi-threaded program.
+2. SortedList.h, SortedList.c:
+   Implementation of linked list.
+3. test.sh:
+   Script to run tests with various arguments passed (threads, iterations, etc.).
+4. Makefile:
+   Supports default, tests, profile, graphs, clean, and dist targets.
+5. lab2b_list.csv:
+   Test results of lab2_list.
+6. lab2b_1.png, lab2b_2.png, lab2b_3.png, lab2b_4.png, lab2b_5.png:
+   Various graphs generated from the results of lab2_list.
+8. lab2_list.gp:
+   Script to generate the graphs described above.
+
+QUESTIONS:
+
+2.3.1: CPU time in the basic list implementation
+
+With the 1-2 threaded tests, most of the CPU time would be spent on list operations
+since there is very little contention between the threads, meaning that locking and
+waiting time would be much less sizeable. These list operations can get expensive
+depending on the number of lists/iterations, and waiting time can also be expensive
+when there are numerous threads.
+
+Spinning and waiting would be most expensive in the high-thread spin lock tests,
+while overhead and context switching can be expensive for high-thread mutex lock
+tests. The high-thread mutex lock tests definitely use less of the CPU on locks and
+more on the actual list operations.
+
+
+2.3.2: Execution Profiling
+
+The lines of code consuming most of the CPU time are those involving the spinning
+operation (the __sync_lock_test_and_set while loops). The more threads there are,
+the more while loops there are that have to spin and spin requesting a lock, 
+consuming a good chunk of CPU resources.
+
+
+2.3.3: Mutex Wait Time
+
+The average lock-wait time rises dramatically with increasing the number of threads
+because more threads means a longer queue for any given lock, thus increasing wait
+time proportionally to the number of waiting threads. The completion time per
+operation rises, less dramatically, because as much as there are waiting threads,
+the thread in possession of the lock is performing operations without a huge cost
+in performance, as the other threads are not consuming CPU while waiting.
+
+
+2.3.4: Performance of Partitioned Lists
+
+The performance of the synchronized methods increases with the number of lists
+as parallelization increases. However, at some point, increasing the number of
+lists would start to give much less of a boost to performance because there would
+so many lists that the threads would each have their own lock with no need to
+compete for each others' locks. So the lock operations would only be hurting
+be performance as they are almost completely unnecessary.
+
+The throughput of an N-way partitioned list does not appear to be equivalent to the
+throughput of a single list with fewer (1/N) threads, though the performance is not
+vastly different. This can be explained by the build-up of overheads when having to
+maintain more threads and more locks with more lists.
